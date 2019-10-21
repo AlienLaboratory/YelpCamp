@@ -4,6 +4,9 @@ const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const Campground = require("./models/campground");
+const seedDB = require("./seeds");
+
+seedDB();
 
 const campgrounds = [
   {
@@ -87,9 +90,12 @@ app.get('/campgrounds/new', (req, res) => {
 
 
 app.get('/campgrounds/:id', (req, res) => {
-  Campground.findById(req.params.id, (err, camp) => {
+
+  Campground.findById(req.params.id).populate("comments").exec(function(err, camp){
+  	console.log("found camp " + camp);
     res.render('show', { campground: camp });
   });
+
 });
 
 app.post('/campgrounds', (req, res) => {
