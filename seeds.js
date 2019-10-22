@@ -5,17 +5,21 @@ const Comment = require("./models/comment");
 const data = [
 {name:"Super Campground",
 image: "https://images.unsplash.com/photo-1533732533124-5e089ed02342?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-description:"blah blah blah"
+description:"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,quis nostrud exercitation ullamco laboris"
 },
 {name:"The Greatest View",
 image: "https://images.unsplash.com/photo-1519681393784-d120267933ba?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-description:"blah blah blah"
+description:"Nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit essecillum dolore eu fugiat nulla pariatur."
 },
 {name:"Perfect Nature",
 image: "https://images.unsplash.com/photo-1516571748831-5d81767b788d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60",
-description:"blah blah blah"
+description:"Excepteur sint occaecat cupidatat nonproident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 }
 ];
+
+  
+
+
 
 function seedDB()
 {
