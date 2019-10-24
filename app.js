@@ -1,54 +1,30 @@
 const express = require('express');
-
 const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const Campground = require("./models/campground");
 const seedDB = require("./seeds");
 const Comment = require("./models/comment")
+const passport = require("passport");
+const localStrategy = require("passport-local");
+const passportLocalMongoose = require("passport-local-mongoose");
+const expressSession = require("express-session");
+const User = require("./models/user");
 app.use(express.static(__dirname+"/public"));
+app.use(expressSession(
+  {
+    secret:"area 51",
+    resave:false,
+    saveUninitialized:false
+  }
+));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new localStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 seedDB();
-
-const campgrounds = [
-  {
-    name: 'John',
-    image: 'https://images.unsplash.com/photo-1504851149312-7a075b496cc7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',
-  },
-  {
-    name: 'Lampsy',
-    image: 'https://images.unsplash.com/photo-1530541930197-ff16ac917b0e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',
-  },
-  {
-    name: 'Lance',
-    image: 'https://images.unsplash.com/photo-1517771778436-39f5763f5270?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',
-  },
-  {
-    name: 'Franz',
-    image: 'https://images.unsplash.com/photo-1470246973918-29a93221c455?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',
-  },
-  {
-    name: 'John',
-    image: 'https://images.unsplash.com/photo-1504851149312-7a075b496cc7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',
-  },
-  {
-    name: 'Lampsy',
-    image: 'https://images.unsplash.com/photo-1530541930197-ff16ac917b0e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',
-  },
-  {
-    name: 'Lance',
-    image: 'https://images.unsplash.com/photo-1517771778436-39f5763f5270?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',
-  },
-  {
-    name: 'Franz',
-    image: 'https://images.unsplash.com/photo-1470246973918-29a93221c455?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',
-  },
-];
-
-// connecting/creating yelpCamp database (USING LOCAL MONGODB)
-//mongoose.connect('mongodb://localhost/yelpCamp', { useNewUrlParser: true, useUnifiedTopology: true });
-
-// connecting/creating yelpCamp database (USING CLOUD ATLAS MONGODB)
 const connectionString = "mongodb+srv://Oleksandr:ecu3ador4@cluster0-hnbvl.mongodb.net/test?retryWrites=true&w=majority";
 
 mongoose.connect(connectionString,{useNewUrlParser:true,useUnifiedTopology:true});
@@ -60,6 +36,14 @@ app.get('/', (req, res) => {
   res.render('landing');
 });
 
+function isLoggedIn(req,res,next)
+{
+  if(req.isAuthenticated())
+  {
+    return next();
+  }
+  res.redirect("/login");
+}
 
 
 app.get('/campgrounds', (req, res) => {
@@ -103,7 +87,7 @@ app.post('/campgrounds', (req, res) => {
   });
 });
 
-app.get("/campgrounds/:id/comments/new",function(req,res)
+app.get("/campgrounds/:id/comments/new",isLoggedIn,function(req,res)
 	{
 		Campground.findById(req.params.id,function(err,foundCamp)
 			{
@@ -119,7 +103,7 @@ app.get("/campgrounds/:id/comments/new",function(req,res)
 			});
 	});
 
-app.post("/campgrounds/:id/comments",function(req,res)
+app.post("/campgrounds/:id/comments", isLoggedIn, function(req,res)
 	{
 		Campground.findById(req.params.id,function(err,campground)
 		{
@@ -144,7 +128,43 @@ app.post("/campgrounds/:id/comments",function(req,res)
 					});
 			}
 		});
-	});
+  });
+  
+
+  app.get("/register",function(req,res){
+    res.render("register");
+  });
+
+  app.post("/register",function(req,res){
+    const newUser = new User({username:req.body.username});
+    User.register(newUser,req.body.password,function(err,user)
+    {
+      if(err)
+      {
+        console.log(err);
+        return res.render("register");
+      }
+        passport.authenticate("local")(req,res,function(){
+          res.redirect("/campgrounds");
+        });
+    });
+  });
+
+  app.get('/login',function(req,res)
+  {
+    res.render("login");
+  });
+
+  app.post('/login',passport.authenticate("local",{
+    successRedirect:"/campgrounds",
+    failureRedirect:"/login"
+  }),function(req,res)
+  {
+  });
+
+  app.get("/logout",function(req,res){
+    req.logout();
+  });
 
 app.listen(9000, () => {
   console.log('YELP CAMP SEVER HAS STARTED!');

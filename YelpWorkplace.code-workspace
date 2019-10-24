@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"name": "liximomo.sftp-1.12.9",
+			"path": "C:\\Users\\User\\.vscode\\extensions\\liximomo.sftp-1.12.9"
+		},
+		{
+			"name": "YelpCamp",
+			"path": "."
+		},
+		{
+			"name": "SSH FS - oleksandr.danylets",
+			"uri": "ssh://oleksandr.danylets/"
+		}
+	],
+	"settings": {}
+}
