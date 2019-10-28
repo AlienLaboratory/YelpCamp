@@ -2,8 +2,9 @@ import express from 'express';
 const router = express.Router();
 import Campground from '../models/campground';
 import Comment from '../models/comment';
+import isLoggedIn from '../middleware/login';
 
-router.get("/campgrounds/:id/comments/new",isLoggedIn,function(req,res)
+router.get("/campgrounds/:id/comments/new", isLoggedIn,function(req,res)
 	{
 		Campground.findById(req.params.id,function(err,foundCamp)
 			{
@@ -37,6 +38,9 @@ router.post("/campgrounds/:id/comments", isLoggedIn, function(req,res)
 						}
 						else
 						{
+              comment.author.id = req.user.id;
+              comment.author.username = req.user.username;
+              comment.save();
 							campground.comments.push(comment);
 							campground.save();
 							res.redirect("/campgrounds/"+campground._id);
@@ -45,15 +49,4 @@ router.post("/campgrounds/:id/comments", isLoggedIn, function(req,res)
 			}
 		});
   });
-
-
-  function isLoggedIn(req,res,next)
-{
-  if(req.isAuthenticated())
-  {
-    return next();
-  }
-  res.redirect("/login");
-}
-
   module.exports = router;

@@ -34,7 +34,7 @@ passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-seedDB();
+//seedDB();
 const connectionString = "mongodb+srv://Oleksandr:ecu3ador4@cluster0-hnbvl.mongodb.net/test?retryWrites=true&w=majority";
 
 mongoose.connect(connectionString,{useNewUrlParser:true,useUnifiedTopology:true});
