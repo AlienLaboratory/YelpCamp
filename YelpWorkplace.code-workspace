@@ -7,10 +7,6 @@
 		{
 			"name": "YelpCamp",
 			"path": "."
-		},
-		{
-			"name": "SSH FS - oleksandr.danylets",
-			"uri": "ssh://oleksandr.danylets/"
 		}
 	],
 	"settings": {}

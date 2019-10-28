@@ -9,3 +9,4 @@
 .env.production.local
 .vscode/launch.json
 .vscode/
+YelpWorkplace.code-workspace
