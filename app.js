@@ -13,7 +13,7 @@ import User from './models/user';
 import campgroundRoutes from './routes/campground';
 import commentRoutes from './routes/comments';
 import indexRoutes from './routes/index';
-
+import methodOverride from 'method-override';
 
 app.use(express.static(__dirname+"/public"));
 app.use(expressSession(
@@ -30,6 +30,7 @@ app.use(function(req,res,next)
   res.locals.currentUser = req.user;
   next();
 });
+app.use(methodOverride("_method"));
 passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());

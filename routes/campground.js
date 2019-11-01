@@ -4,6 +4,50 @@ import Campground from '../models/campground';
 import isLoggedIn from '../middleware/login';
 
 
+router.get("/campgrounds/:id/edit",function(req,res)
+{
+  Campground.findById(req.params.id,function(err,foundCamp)
+  {
+    if(err)
+    {
+      console.log(err);
+    }
+    else
+    {
+      res.render("campgrounds/edit",{campground:foundCamp});
+    }
+  })
+});
+
+router.put("/campgrounds/:id",function(req,res){
+    Campground.findByIdAndUpdate(req.params.id,req.body.campground,function(err,updatedCamp){
+      if(err)
+      {
+        res.redirect("/campgrounds");
+      }
+      else
+      {
+        res.redirect("/campgrounds/"+req.params.id);
+      }
+    });
+});
+
+
+router.delete("/campgrounds/:id",function(req,res){
+    Campground.findByIdAndRemove(req.params.id,function(err)
+    {
+      if(err)
+      {
+        res.redirect("/campgrounds");
+      }
+      else
+      {
+        res.redirect("/campgrounds");
+      }
+    })
+});
+
+
 router.get('/campgrounds', (req, res) => {
   // get campgrounds from yelpCamp Database
   Campground.find({}, (err, allCampgrounds) => {

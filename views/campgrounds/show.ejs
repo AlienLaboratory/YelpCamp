@@ -15,11 +15,15 @@
 				<div class="card-body">
 					<div class="title-block clearfix">
 						<h4 class="card-title float-right"> 9.00$/night </h4>
-						<a class="card-link float-left" href="" "> <%=campground.name%> </a> 
+						<button class="card-link float-left" href="" "> <%=campground.name%> </button> 
 					</div>
 					<p class="card-text "> <%=campground.description%> </p>
-					<p class="card-text float-left "> <em> Author: <%=campground.author.username%> </em></p>
-					<p class="card-text float-right text-danger"> Reviews </p>
+					<p class="card-text text-left "> <em> Author: <%=campground.author.username%> </em></p>
+					<p class="card-text text-left text-danger"> Reviews </p> 
+					<a class="btn btn-warning btn-sm mb-1" href="/campgrounds/<%=campground._id%>/edit"> Edit Post</a>
+					<form method="POST" action="/campgrounds/<%=campground._id%>?_method=DELETE">	
+							<button class="btn btn-danger btn-sm"> Delete Post</button>
+					</form>
 				</div>
 			</div>
 
