@@ -1,5 +1,5 @@
 // creating Mongoose Schema for db
-const mongoose = require('mongoose');
+import  mongoose from  'mongoose';
 
 const campgroundSchema = new mongoose.Schema(
   {

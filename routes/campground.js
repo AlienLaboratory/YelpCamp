@@ -2,24 +2,35 @@ import express from 'express';
 const router = express.Router();
 import Campground from '../models/campground';
 import isLoggedIn from '../middleware/login';
+import isAuthorized from '../middleware/authorize';
 
-
-router.get("/campgrounds/:id/edit",function(req,res)
+router.get("/campgrounds/:id/edit",isAuthorized,function(req,res)
 {
-  Campground.findById(req.params.id,function(err,foundCamp)
-  {
-    if(err)
+
+    if(req.isAuthenticated())
     {
-      console.log(err);
+      Campground.findById(req.params.id,function(err,foundCamp)
+      {
+        if(err)
+        {
+          console.log(err);
+          res.redirect("back");
+        }
+        else
+        {
+            res.render("campgrounds/edit",{campground:foundCamp});
+        }
+      });
     }
     else
     {
-      res.render("campgrounds/edit",{campground:foundCamp});
+      res.redirect("/login");
     }
-  })
+
+  
 });
 
-router.put("/campgrounds/:id",function(req,res){
+router.put("/campgrounds/:id",isAuthorized,function(req,res){
     Campground.findByIdAndUpdate(req.params.id,req.body.campground,function(err,updatedCamp){
       if(err)
       {
@@ -33,7 +44,7 @@ router.put("/campgrounds/:id",function(req,res){
 });
 
 
-router.delete("/campgrounds/:id",function(req,res){
+router.delete("/campgrounds/:id",isAuthorized,function(req,res){
     Campground.findByIdAndRemove(req.params.id,function(err)
     {
       if(err)
@@ -60,7 +71,8 @@ router.get('/campgrounds', (req, res) => {
 });
 
 router.get('/campgrounds/new', isLoggedIn, (req, res) => {
-  res.render('campgrounds/new');
+  
+  res.render('campgrounds/new',{});
 });
 
 
