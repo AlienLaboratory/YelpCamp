@@ -2,7 +2,7 @@ import express from 'express';
 const router = express.Router();
 import Campground from '../models/campground';
 import isLoggedIn from '../middleware/login';
-import isAuthorized from '../middleware/authorize';
+import isAuthorized from '../middleware/postAuth';
 
 router.get("/campgrounds/:id/edit",isAuthorized,function(req,res)
 {
