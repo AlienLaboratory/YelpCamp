@@ -1,10 +1,9 @@
 import express from 'express';
 const router = express.Router();
 import Campground from '../models/campground';
-import isLoggedIn from '../middleware/login';
-import isAuthorized from '../middleware/postAuth';
+import middleware from '../middleware/index';
 
-router.get("/campgrounds/:id/edit",isAuthorized,function(req,res)
+router.get("/campgrounds/:id/edit",middleware.isAuthorized,function(req,res)
 {
 
     if(req.isAuthenticated())
@@ -30,7 +29,7 @@ router.get("/campgrounds/:id/edit",isAuthorized,function(req,res)
   
 });
 
-router.put("/campgrounds/:id",isAuthorized,function(req,res){
+router.put("/campgrounds/:id",middleware.isAuthorized,function(req,res){
     Campground.findByIdAndUpdate(req.params.id,req.body.campground,function(err,updatedCamp){
       if(err)
       {
@@ -44,7 +43,7 @@ router.put("/campgrounds/:id",isAuthorized,function(req,res){
 });
 
 
-router.delete("/campgrounds/:id",isAuthorized,function(req,res){
+router.delete("/campgrounds/:id",middleware.isAuthorized,function(req,res){
     Campground.findByIdAndRemove(req.params.id,function(err)
     {
       if(err)
@@ -70,7 +69,7 @@ router.get('/campgrounds', (req, res) => {
   });
 });
 
-router.get('/campgrounds/new', isLoggedIn, (req, res) => {
+router.get('/campgrounds/new', middleware.isLoggedIn, (req, res) => {
   
   res.render('campgrounds/new',{});
 });
@@ -85,7 +84,7 @@ router.get('/campgrounds/:id', (req, res) => {
 
 });
 
-router.post('/campgrounds', isLoggedIn, (req, res) => {
+router.post('/campgrounds', middleware.isLoggedIn, (req, res) => {
   // res.render("campgrounds");
   const { name } = req.body;
   const { image } = req.body;
