@@ -78,7 +78,6 @@ router.get('/campgrounds/new', middleware.isLoggedIn, (req, res) => {
 router.get('/campgrounds/:id', (req, res) => {
 
   Campground.findById(req.params.id).populate("comments").exec(function(err, camp){
-  	console.log("found camp " + camp);
     res.render('campgrounds/show', { campground: camp });
   });
 
@@ -88,17 +87,19 @@ router.post('/campgrounds', middleware.isLoggedIn, (req, res) => {
   // res.render("campgrounds");
   const { name } = req.body;
   const { image } = req.body;
+  const {price} = req.body;
   const { description } = req.body;
   const author = {
     id:req.user._id,
     username:req.user.username
   };
-  const newCamp = { name:name, image:image, description:description,author:author };
+  const newCamp = { name:name, image:image, price:price, description:description,author:author };
   // here we need to create a new campground and save it to a database(yelpCamp)
   Campground.create(newCamp, (err, campground) => {
     if (err) {
-      console.log(err);
+      req.flash("error","something went wrong!");
     } else {
+      req.flash("success","Successfully created Campground!");
       res.redirect('/campgrounds');
     }
   });
