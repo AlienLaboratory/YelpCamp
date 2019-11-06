@@ -8,6 +8,7 @@ middleware.isLoggedIn = function isLoggedIn(req,res,next)
   {
     return next();
   }
+  req.flash("error", "Please log in first");
   res.redirect("/login");
 }
 
@@ -19,6 +20,7 @@ middleware.isAuthorized  = function isAuthorized(req,res,next)
     {
       if(err)
       {
+        req.flash("error", "Campground not found!");
         console.log(err);
         res.redirect("/campgrounds");
       }
@@ -30,6 +32,7 @@ middleware.isAuthorized  = function isAuthorized(req,res,next)
         }
         else
         {
+          req.flash("error", "Looks like this campground does not belong to you!");
           res.redirect("back");
         }
         
@@ -38,6 +41,7 @@ middleware.isAuthorized  = function isAuthorized(req,res,next)
   }
   else
   {
+    req.flash("error", "Please log in first");
     res.redirect("/login");
   }
 }
@@ -51,6 +55,7 @@ middleware.canComment = function canComment(req,res,next)
       if(err)
       {
         console.log(err);
+        req.flash("error", "Can't comment!");
         res.redirect("/campgrounds");
       }
       else
@@ -62,6 +67,7 @@ middleware.canComment = function canComment(req,res,next)
         }
         else
         {
+          req.flash("error", "Could not comment!");
           res.redirect("back");
         }
         
@@ -70,6 +76,7 @@ middleware.canComment = function canComment(req,res,next)
   }
   else
   {
+    req.flash("error", "Please log in first");
     res.redirect("/login");
   }
 }

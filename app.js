@@ -14,6 +14,7 @@ import campgroundRoutes from './routes/campground';
 import commentRoutes from './routes/comments';
 import indexRoutes from './routes/index';
 import methodOverride from 'method-override';
+import flash from 'connect-flash';
 
 app.use(express.static(__dirname+"/public"));
 app.use(expressSession(
@@ -23,14 +24,18 @@ app.use(expressSession(
     saveUninitialized:false
   }
 ));
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(function(req,res,next)
 {
   res.locals.currentUser = req.user;
+  res.locals.error = req.flash("error");
+  res.locals.success = req.flash("success");
   next();
 });
 app.use(methodOverride("_method"));
+
 passport.use(new localStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
