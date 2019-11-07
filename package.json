@@ -2,9 +2,10 @@
   "name": "yelpcamp",
   "version": "1.0.0",
   "description": "YelpCamp v1",
-  "main": "app.js",
+  "main": "start.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+     "start":"node start.js"
   },
   "@std/esm": "cjs",
   "author": "Oleksandr",
