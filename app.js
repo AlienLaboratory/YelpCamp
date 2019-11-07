@@ -42,16 +42,16 @@ passport.deserializeUser(User.deserializeUser());
 
 //seedDB();
 const connectionString = "mongodb+srv://Oleksandr:ecu3ador4@cluster0-hnbvl.mongodb.net/test?retryWrites=true&w=majority";
-
 mongoose.connect(connectionString,{useNewUrlParser:true,useUnifiedTopology:true});
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
+console.log("campgroundRoutes "+campgroundRoutes);
 app.use(campgroundRoutes);
 app.use(commentRoutes);
 app.use(indexRoutes);
 
 
-app.listen(9000, () => {
+app.listen(process.env.PORT||9000,() => {
   console.log('YELP CAMP SEVER HAS STARTED!');
 });

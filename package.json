@@ -6,9 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "@std/esm": "cjs",
   "author": "Oleksandr",
   "license": "ISC",
   "dependencies": {
+    "@std/esm": "^0.26.0",
     "body-parser": "^1.19.0",
     "connect-flash": "^0.1.1",
     "ejs": "^2.7.1",
@@ -21,9 +23,6 @@
     "passport-local-mongoose": "^5.0.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.6.4",
-    "@babel/preset-env": "^7.6.3",
-    "@babel/register": "^7.6.2",
     "babel-eslint": "^10.0.2",
     "eslint": "^6.1.0",
     "eslint-config-airbnb": "^18.0.1",

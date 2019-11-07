@@ -2,9 +2,10 @@ import express from 'express';
 const router = express.Router();
 import Campground from '../models/campground';
 import Comment from '../models/comment';
-import middleware from '../middleware/index';
+import {canComment} from '../middleware/index';
+import {isLoggedIn} from '../middleware/index';
 
-router.delete("/campgrounds/:id/comments/:comment_id",middleware.canComment,function(req,res){
+router.delete("/campgrounds/:id/comments/:comment_id",canComment,function(req,res){
 	Comment.findByIdAndRemove(req.params.comment_id,function(err){
 		if(err)
 		{
@@ -19,7 +20,7 @@ router.delete("/campgrounds/:id/comments/:comment_id",middleware.canComment,func
 	});
 });
 
-router.get("/campgrounds/:id/comments/:comment_id/edit",middleware.canComment,function(req,res)
+router.get("/campgrounds/:id/comments/:comment_id/edit",canComment,function(req,res)
 {
 Campground.findById(req.params.id,function(err,foundCamp)
 {
@@ -49,7 +50,7 @@ Campground.findById(req.params.id,function(err,foundCamp)
 });
 });
 
-router.put("/campgrounds/:id/comments/:comment_id",middleware.canComment,function(req,res)
+router.put("/campgrounds/:id/comments/:comment_id",canComment,function(req,res)
 {
 	Comment.findByIdAndUpdate(req.params.comment_id,req.body.comment,function(err,foundComment)
 	{
@@ -63,7 +64,7 @@ router.put("/campgrounds/:id/comments/:comment_id",middleware.canComment,functio
 	});
 });
 
-router.get("/campgrounds/:id/comments/new", middleware.isLoggedIn,function(req,res)
+router.get("/campgrounds/:id/comments/new", isLoggedIn,function(req,res)
 	{
 		Campground.findById(req.params.id,function(err,foundCamp)
 			{
@@ -79,7 +80,7 @@ router.get("/campgrounds/:id/comments/new", middleware.isLoggedIn,function(req,r
 			});
 	});
 
-router.post("/campgrounds/:id/comments", middleware.isLoggedIn, function(req,res)
+router.post("/campgrounds/:id/comments", isLoggedIn, function(req,res)
 	{
 		Campground.findById(req.params.id,function(err,campground)
 		{
@@ -110,4 +111,4 @@ router.post("/campgrounds/:id/comments", middleware.isLoggedIn, function(req,res
 			}
 		});
   });
-  module.exports = router;
+	export default router;

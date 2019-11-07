@@ -46,6 +46,6 @@ router.get("/register",function(req,res){
     res.redirect("/campgrounds");
   });
 
-  module.exports = router;
+  export default router;
 
  

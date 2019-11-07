@@ -1,8 +1,7 @@
 import Comment from '../models/comment';
 import Campground from '../models/campground';
-const middleware = {};
 
-middleware.isLoggedIn = function isLoggedIn(req,res,next)
+function isLoggedIn(req,res,next)
 {
   if(req.isAuthenticated())
   {
@@ -11,8 +10,7 @@ middleware.isLoggedIn = function isLoggedIn(req,res,next)
   req.flash("error", "Please log in first");
   res.redirect("/login");
 }
-
-middleware.isAuthorized  = function isAuthorized(req,res,next)
+ function isAuthorized(req,res,next)
 {
   if(req.isAuthenticated())
   {
@@ -46,7 +44,7 @@ middleware.isAuthorized  = function isAuthorized(req,res,next)
   }
 }
 
-middleware.canComment = function canComment(req,res,next)
+ function canComment(req,res,next)
 {
   if(req.isAuthenticated())
   {
@@ -81,4 +79,4 @@ middleware.canComment = function canComment(req,res,next)
   }
 }
 
-module.exports = middleware;
+export {isLoggedIn,isAuthorized,canComment};

@@ -1,7 +1,7 @@
 <% include ../partials/header %>
-<div class="container">
-	<h1> Edit comment for <%= campground.name %> </h1>
-	<div class="" style="width:30%; margin: 0 auto;">
+<div class="container new-comment-container">
+	<div class="new-comment-form">
+		<h3> Edit comment for <%= campground.name %> </h3>
 		<form method="POST" action="/campgrounds/<%=campground._id%>/comments/<%=comment._id%>?_method=PUT">
 			<div class="form-group">
 				<input class="form-control" type="text"  name="comment[text]" value=<%=comment.text%>>

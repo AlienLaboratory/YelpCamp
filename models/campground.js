@@ -24,4 +24,4 @@ const campgroundSchema = new mongoose.Schema(
   },
 );
 
-module.exports = mongoose.model('Campground', campgroundSchema);
+export default mongoose.model('Campground', campgroundSchema);
